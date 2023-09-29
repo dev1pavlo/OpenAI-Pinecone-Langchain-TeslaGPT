@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./index.css" rel="stylesheet" type="text/css" />
+    <title>Tesla GPT</title>
+</head>
+
+<body>
+    <div id="root">
+        <div class="chat">
+            <div class="messages">
+                <div class="bot_message message">
+                    <p>Hello! I am Tesla GPT bot and you can ask me some questions about this company. You can ask about
+                        it's Gross profit in 2022 or Net income in 2021 and get the answer :)
+                    </p>
+                </div>
+            </div>
+            <div class="new_message">
+                <div class="message_input">
+                    <textarea id="newMessage" placeholder="Send a message..."
+                        spellcheck="false">What was Net income in 2022 in Tesla, Inc.?</textarea>
+                    <button id="sendMessage">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none"
+                            class="icon-sm m-1 md:m-0">
+                            <path
+                                d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
+                                fill="#ffffff"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const button = window.document.querySelector('#sendMessage');
+        const messages = window.document.querySelector('.messages');
+        button.addEventListener('click', async () => {
+            const questionNode = window.document.querySelector('#newMessage');
+            const question = questionNode.value;
+
+            const questionMessage = document.createElement('div')
+            questionMessage.setAttribute('class', 'user_message message')
+            questionMessage.textContent = question
+            messages.appendChild(questionMessage);
+
+
+            const res = await fetch('/api/gpt', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question })
+            });
+            const data = await res.json();
+            const answer = data.answer;
+
+
+            const answerMessage = document.createElement('div')
+            answerMessage.setAttribute('class', 'bot_message message')
+            answerMessage.textContent = answer
+            messages.appendChild(answerMessage);
+
+            messages.scrollTop = messages.scrollHeight
+        })
+    </script>
+</body>
+
+</html>

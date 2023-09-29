@@ -8,13 +8,15 @@ export default async function queryGPT(
     client: Pinecone,
     indexName: string,
     question: string
-) {    
+) {
     const index = client.Index(indexName);
-    
+
+    console.log(question);
+
     const queryEmbedding = await new OpenAIEmbeddings({
         openAIApiKey: process.env.OPENAI_API_KEY
     }).embedQuery(question);
-    
+
     let queryResponse = await index.query({
         topK: 10,
         vector: queryEmbedding,
@@ -35,4 +37,5 @@ export default async function queryGPT(
     });
 
     console.log('Answer: ', result);
+    return result;
 }
