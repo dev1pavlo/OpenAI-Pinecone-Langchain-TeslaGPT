@@ -18,7 +18,7 @@ const MAX_REQUESTS = 3;
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 1 day in milliseconds
 
 app.use((req, res, next) => {
-    const clientIP = req.ip; // Assuming Express automatically parses the IP
+    const clientIP = req.socket.remoteAddress || req.headers['X-Forwarded-For']; // Assuming Express automatically parses the IP
 
     if (!requestCounts.has(clientIP)) {
         requestCounts.set(clientIP, { count: 0, lastRequestTime: Date.now() });
