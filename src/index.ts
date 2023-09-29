@@ -10,7 +10,7 @@ import express from 'express';
 config();
 const app = express();
 app.use(express.json())
-app.use(express.static(path.join(__dirname, '..', 'public')))
+// app.use(express.static(path.join(__dirname, '..', 'public')))
 
 const requestCounts = new Map();
 
@@ -73,4 +73,5 @@ app.post('/api/gpt', async (req, res) => {
     })
 })
 
-app.listen(3000)
+app.listen(3000);
+export default app;
